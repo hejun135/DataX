@@ -123,6 +123,7 @@
 
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
+        <module>plugin-rdbms-database-util</module>
         <module>plugin-unstructured-storage-util</module>
        
     </modules>

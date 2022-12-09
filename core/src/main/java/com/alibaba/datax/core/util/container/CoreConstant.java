@@ -93,17 +93,20 @@ public class CoreConstant {
 
     public static final String DATAX_JOB_SETTING_ERRORLIMIT_RECORD = "job.setting.errorLimit.record";
 
-    public static final String DATAX_JOB_SETTING_ERRORLIMIT_PERCENT = "job.setting.errorLimit.percentage";
+	public static final String DATAX_JOB_SETTING_ERRORLIMIT_PERCENT = "job.setting.errorLimit.percentage";
 
-    public static final String DATAX_JOB_SETTING_DRYRUN = "job.setting.dryRun";
+	public static final String DATAX_JOB_SETTING_DRYRUN = "job.setting.dryRun";
 
-    public static final String DATAX_JOB_PREHANDLER_PLUGINTYPE = "job.preHandler.pluginType";
+	public static final String DATAX_JOB_SETTING_MODE = "job.setting.mode";
 
-    public static final String DATAX_JOB_PREHANDLER_PLUGINNAME = "job.preHandler.pluginName";
+	public static final String DATAX_JOB_PREHANDLER_PLUGINTYPE = "job.preHandler.pluginType";
 
-    public static final String DATAX_JOB_POSTHANDLER_PLUGINTYPE = "job.postHandler.pluginType";
+	public static final String DATAX_JOB_PREHANDLER_PLUGINNAME = "job.preHandler.pluginName";
 
-    public static final String DATAX_JOB_POSTHANDLER_PLUGINNAME = "job.postHandler.pluginName";
+	public static final String DATAX_JOB_POSTHANDLER_PLUGINTYPE = "job.postHandler.pluginType";
+
+	public static final String DATAX_JOB_POSTHANDLER_PLUGINNAME = "job.postHandler.pluginName";
+
     // ----------------------------- 局部使用的变量
     public static final String JOB_WRITER = "reader";
 

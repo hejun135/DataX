@@ -6,4 +6,9 @@ public final class CommonConstant {
      */
     public static String LOAD_BALANCE_RESOURCE_MARK = "loadBalanceResourceMark";
 
+    /**
+     * reader插件spit过的配置集合
+     */
+    public static String READER_SPIT_CONFIG_LIST = "readerSpitConfigList";
+
 }

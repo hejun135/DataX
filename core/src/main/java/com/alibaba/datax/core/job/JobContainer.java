@@ -1,5 +1,6 @@
 package com.alibaba.datax.core.job;
 
+import com.alibaba.datax.common.constant.CommonConstant;
 import com.alibaba.datax.common.constant.PluginType;
 import com.alibaba.datax.common.exception.DataXException;
 import com.alibaba.datax.common.plugin.AbstractJobPlugin;
@@ -394,7 +395,7 @@ public class JobContainer extends AbstractContainer {
                 .doReaderSplit(this.needChannelNumber);
         int taskNumber = readerTaskConfigs.size();
         List<Configuration> writerTaskConfigs = this
-                .doWriterSplit(taskNumber);
+                .doWriterSplit(taskNumber,readerTaskConfigs);
 
         List<Configuration> transformerList = this.configuration.getListConfiguration(CoreConstant.DATAX_JOB_CONTENT_TRANSFORMER);
 
@@ -742,10 +743,11 @@ public class JobContainer extends AbstractContainer {
         return readerSlicesConfigs;
     }
 
-    private List<Configuration> doWriterSplit(int readerTaskNumber) {
+    private List<Configuration> doWriterSplit(int readerTaskNumber,List<Configuration> readerTaskConfigs) {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.WRITER, this.writerPluginName));
-
+        //把reader分片之后的配置集合回传writer中进行判断和处理
+        this.jobWriter.getPluginJobConf().set(CommonConstant.READER_SPIT_CONFIG_LIST,readerTaskConfigs);
         List<Configuration> writerSlicesConfigs = this.jobWriter
                 .split(readerTaskNumber);
         if (writerSlicesConfigs == null || writerSlicesConfigs.size() <= 0) {
