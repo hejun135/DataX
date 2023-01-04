@@ -74,7 +74,7 @@ DataX目前已经有了比较全面的插件体系，主流的RDBMS数据库、N
 | 时间序列数据库 | OpenTSDB  |√| | [读](https://github.com/alibaba/DataX/blob/master/opentsdbreader/doc/opentsdbreader.md) |
 | | TSDB  |√|√| [读](https://github.com/alibaba/DataX/blob/master/tsdbreader/doc/tsdbreader.md) 、[写](https://github.com/alibaba/DataX/blob/master/tsdbwriter/doc/tsdbhttpwriter.md) |
 | | TDengine  |√|√| [读](https://github.com/alibaba/DataX/blob/master/tdenginereader/doc/tdenginereader-CN.md) 、[写](https://github.com/alibaba/DataX/blob/master/tdenginewriter/doc/tdenginewriter-CN.md) |
-
+| 整库同步         | MySQL    |     √     |     √     |[读](https://github.com/hejun135/DataX/blob/master/mysqlallreader/doc/mysqlallreader.md) 、[写](https://github.com/hejun135/DataX/blob/master/mysqlallwriter/doc/mysqlallwriter.md)|
 # 阿里云DataWorks数据集成
 
 目前DataX的已有能力已经全部融和进阿里云的数据集成，并且比DataX更加高效、安全，同时数据集成具备DataX不具备的其它高级特性和功能。可以理解为数据集成是DataX的全面升级的商业化用版本，为企业可以提供稳定、可靠、安全的数据传输服务。与DataX相比，数据集成主要有以下几大突出特点：
@@ -104,6 +104,9 @@ DataX目前已经有了比较全面的插件体系，主流的RDBMS数据库、N
 # 重要版本更新说明
 
 DataX 后续计划月度迭代更新，也欢迎感兴趣的同学提交 Pull requests，月度更新内容会介绍介绍如下。
+
+- [datax_v20230104](https://github.com/hejun135/DataX/releases/tag/datax_v20230104)
+  - 增加mysql整库同步功能
 
 - [datax_v202210]（https://github.com/alibaba/DataX/releases/tag/datax_v202210)
   - 涉及通道能力更新（OceanBase、Tdengine、Doris等）
