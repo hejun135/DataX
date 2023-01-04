@@ -1,0 +1,15 @@
+{
+    "name": "mysqlallwriter",
+    "parameter": {
+        "username": "",
+        "password": "",
+        "writeMode": "",
+        "session": [],
+        "connection": [
+            {
+                "jdbcUrl": "",
+                "database": ""
+            }
+        ]
+    }
+}

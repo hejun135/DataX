@@ -48,6 +48,7 @@
 
         <!-- reader -->
         <module>mysqlreader</module>
+        <module>mysqlallreader</module>
         <module>drdsreader</module>
         <module>sqlserverreader</module>
         <module>postgresqlreader</module>
@@ -82,6 +83,7 @@
 
         <!-- writer -->
         <module>mysqlwriter</module>
+        <module>mysqlallwriter</module>
         <module>starrockswriter</module>
         <module>drdswriter</module>
         <module>oraclewriter</module>

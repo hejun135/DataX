@@ -33,6 +33,13 @@
             <outputDirectory>datax</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>mysqlallreader/target/datax/</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory>datax</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>oceanbasev10reader/target/datax/</directory>
             <includes>
                 <include>**/*.*</include>
@@ -233,6 +240,13 @@
         <!-- writer -->
         <fileSet>
             <directory>mysqlwriter/target/datax/</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory>datax</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>mysqlallwriter/target/datax/</directory>
             <includes>
                 <include>**/*.*</include>
             </includes>

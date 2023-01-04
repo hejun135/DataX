@@ -1,0 +1,44 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 10
+      },
+      "errorLimit": {
+        "record": 0,
+        "percentage": 0.02
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlallreader",
+          "parameter": {
+            "username": "test",
+            "password": "test",
+            "connection": [
+              {
+                "jdbcUrl": ["jdbc:mysql://localhost:3306/test"],
+                "database": "test"
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "mysqlallwriter",
+          "parameter": {
+            "username": "test",
+            "password": "test",
+            "writeMode":"replace",
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:mysql://localhost:3306/test1",
+                "database": "test1"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

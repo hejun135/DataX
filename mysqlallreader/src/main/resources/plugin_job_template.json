@@ -1,0 +1,13 @@
+{
+    "name": "mysqlallreader",
+    "parameter": {
+        "username": "",
+        "password": "",
+        "connection": [
+            {
+            "jdbcUrl": [],
+            "database": ""
+            }
+        ]
+    }
+}
