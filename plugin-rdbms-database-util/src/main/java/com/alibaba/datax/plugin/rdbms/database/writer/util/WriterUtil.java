@@ -11,6 +11,7 @@ import com.alibaba.datax.plugin.rdbms.database.writer.Constant;
 import com.alibaba.datax.plugin.rdbms.database.writer.Key;
 import com.alibaba.druid.sql.parser.ParserException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public final class WriterUtil {
 
     //TODO 切分报错
     public static List<Configuration> doSplit(Configuration simplifiedConf,
-                                              int adviceNumber) {
+                                              int adviceNumber,DataBaseType dataBaseType) {
 
         List<Configuration> splitResultConfigs = new ArrayList<Configuration>();
         List<Configuration> readerConfigList = simplifiedConf.getListConfiguration(CommonConstant.READER_SPIT_CONFIG_LIST);
@@ -37,12 +38,6 @@ public final class WriterUtil {
             }
 
             return splitResultConfigs;
-        }
-
-        if (tableNumber != adviceNumber) {
-            throw DataXException.asDataXException(DBUtilErrorCode.CONF_ERROR,
-                    String.format("您的配置文件中的列配置信息有误. 您要写入的目的端的表个数是:%s , 但是根据系统建议需要切分的份数是：%s. 请检查您的配置并作出修改.",
-                            tableNumber, adviceNumber));
         }
 
         String jdbcUrl;
@@ -62,13 +57,16 @@ public final class WriterUtil {
             sliceConfig.remove(Constant.CONN_MARK);
 
             List<String> tables = connConf.getList(Key.TABLE, String.class);
-
-            for (String table : tables) {
+            List<List> column = connConf.getList(Key.COLUMN,List.class);
+            Validate.isTrue(column.size() == tables.size(), "您写入数据库表和列集合个数不一致.");
+            for (int i = 0; i < tables.size(); i++) {
+                String table = tables.get(i);
                 Configuration tempSlice = sliceConfig.clone();
                 tempSlice.set(Key.TABLE, table);
                 tempSlice.set(Key.PRE_SQL, renderPreOrPostSqls(preSqls, table));
                 tempSlice.set(Key.POST_SQL, renderPreOrPostSqls(postSqls, table));
-
+                tempSlice.set(Key.COLUMN,column.get(i));
+                OriginalConfPretreatmentUtil.dealWriteMode(tempSlice,jdbcUrl,dataBaseType,column.get(i));
                 splitResultConfigs.add(tempSlice);
             }
 

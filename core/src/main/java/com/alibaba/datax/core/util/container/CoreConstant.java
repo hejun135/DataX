@@ -97,7 +97,12 @@ public class CoreConstant {
 
 	public static final String DATAX_JOB_SETTING_DRYRUN = "job.setting.dryRun";
 
-	public static final String DATAX_JOB_SETTING_MODE = "job.setting.mode";
+	/**
+	 * 是否是整库模式
+	 */
+	public static final String DATAX_JOB_SETTING_DATABASE_MODE = "job.setting.database.mode";
+
+	public static final String TABLE = "table";
 
 	public static final String DATAX_JOB_PREHANDLER_PLUGINTYPE = "job.preHandler.pluginType";
 

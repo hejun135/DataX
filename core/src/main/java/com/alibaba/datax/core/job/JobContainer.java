@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by jingxing on 14-8-24.
@@ -302,6 +303,10 @@ public class JobContainer extends AbstractContainer {
                 this.getContainerCommunicator());
         //必须先Reader ，后Writer
         this.jobReader = this.initJobReader(jobPluginCollector);
+        //整库模式
+        if (this.jobReader.getPluginName().contains("all")) {
+            configuration.set(CoreConstant.DATAX_JOB_SETTING_DATABASE_MODE,true);
+        }
         this.jobWriter = this.initJobWriter(jobPluginCollector);
     }
 
@@ -779,35 +784,71 @@ public class JobContainer extends AbstractContainer {
             List<Configuration> readerTasksConfigs,
             List<Configuration> writerTasksConfigs,
             List<Configuration> transformerConfigs) {
-        if (readerTasksConfigs.size() != writerTasksConfigs.size()) {
-            throw DataXException.asDataXException(
-                    FrameworkErrorCode.PLUGIN_SPLIT_ERROR,
-                    String.format("reader切分的task数目[%d]不等于writer切分的task数目[%d].",
-                            readerTasksConfigs.size(), writerTasksConfigs.size())
-            );
-        }
+        Boolean databaseMode = configuration.getBool(CoreConstant.DATAX_JOB_SETTING_DATABASE_MODE, false);
+        //整库模式下，需要对表名进行一一匹配
+        if (databaseMode){
+            List<Configuration> contentConfigs = new ArrayList<Configuration>();
+            Integer taskId = 0;
+            for (int i = 0; i < readerTasksConfigs.size(); i++) {
+                Configuration readerTasksConfig = readerTasksConfigs.get(i);
+                String readerTableName = readerTasksConfig.getString(CoreConstant.TABLE);
+                for (int i1 = 0; i1 < writerTasksConfigs.size(); i1++) {
+                    Configuration writerTasksConfig = readerTasksConfigs.get(i1);
+                    String writerTableName = writerTasksConfig.getString(CoreConstant.TABLE);
+                    //reader的表名和writer的表名一致
+                    if (Objects.equals(readerTableName,writerTableName)){
+                        Configuration taskConfig = Configuration.newDefault();
+                        taskConfig.set(CoreConstant.JOB_READER_NAME,
+                                this.readerPluginName);
+                        taskConfig.set(CoreConstant.JOB_READER_PARAMETER,
+                                readerTasksConfigs.get(i));
+                        taskConfig.set(CoreConstant.JOB_WRITER_NAME,
+                                this.writerPluginName);
+                        taskConfig.set(CoreConstant.JOB_WRITER_PARAMETER,
+                                writerTasksConfigs.get(i1));
 
-        List<Configuration> contentConfigs = new ArrayList<Configuration>();
-        for (int i = 0; i < readerTasksConfigs.size(); i++) {
-            Configuration taskConfig = Configuration.newDefault();
-            taskConfig.set(CoreConstant.JOB_READER_NAME,
-                    this.readerPluginName);
-            taskConfig.set(CoreConstant.JOB_READER_PARAMETER,
-                    readerTasksConfigs.get(i));
-            taskConfig.set(CoreConstant.JOB_WRITER_NAME,
-                    this.writerPluginName);
-            taskConfig.set(CoreConstant.JOB_WRITER_PARAMETER,
-                    writerTasksConfigs.get(i));
+                        if (transformerConfigs != null && transformerConfigs.size() > 0) {
+                            taskConfig.set(CoreConstant.JOB_TRANSFORMER, transformerConfigs);
+                        }
 
-            if(transformerConfigs!=null && transformerConfigs.size()>0){
-                taskConfig.set(CoreConstant.JOB_TRANSFORMER, transformerConfigs);
+                        taskConfig.set(CoreConstant.TASK_ID, taskId);
+                        contentConfigs.add(taskConfig);
+                        taskId++;
+                    }
+                }
+            }
+            return contentConfigs;
+        }else {
+            if (readerTasksConfigs.size() != writerTasksConfigs.size()) {
+                throw DataXException.asDataXException(
+                        FrameworkErrorCode.PLUGIN_SPLIT_ERROR,
+                        String.format("reader切分的task数目[%d]不等于writer切分的task数目[%d].",
+                                readerTasksConfigs.size(), writerTasksConfigs.size())
+                );
             }
 
-            taskConfig.set(CoreConstant.TASK_ID, i);
-            contentConfigs.add(taskConfig);
+            List<Configuration> contentConfigs = new ArrayList<Configuration>();
+            for (int i = 0; i < readerTasksConfigs.size(); i++) {
+                Configuration taskConfig = Configuration.newDefault();
+                taskConfig.set(CoreConstant.JOB_READER_NAME,
+                        this.readerPluginName);
+                taskConfig.set(CoreConstant.JOB_READER_PARAMETER,
+                        readerTasksConfigs.get(i));
+                taskConfig.set(CoreConstant.JOB_WRITER_NAME,
+                        this.writerPluginName);
+                taskConfig.set(CoreConstant.JOB_WRITER_PARAMETER,
+                        writerTasksConfigs.get(i));
+
+                if (transformerConfigs != null && transformerConfigs.size() > 0) {
+                    taskConfig.set(CoreConstant.JOB_TRANSFORMER, transformerConfigs);
+                }
+
+                taskConfig.set(CoreConstant.TASK_ID, i);
+                contentConfigs.add(taskConfig);
+            }
+            return contentConfigs;
         }
 
-        return contentConfigs;
     }
 
     /**

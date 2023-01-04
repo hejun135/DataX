@@ -7,7 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>plugin-rdbms-database-util</artifactId>
-	<name>plugin-rdbms-util</name>
+	<name>plugin-rdbms-database-util</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

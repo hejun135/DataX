@@ -128,8 +128,8 @@ public class CommonAllRdbmsWriter {
         }
 
         public List<Configuration> split(Configuration originalConfig,
-                                         int mandatoryNumber) {
-            return WriterUtil.doSplit(originalConfig, mandatoryNumber);
+                                         int mandatoryNumber,DataBaseType dataBaseType) {
+            return WriterUtil.doSplit(originalConfig, mandatoryNumber,dataBaseType);
         }
 
         // 一般来说，是需要推迟到 task 中进行post 的执行（单表情况例外）

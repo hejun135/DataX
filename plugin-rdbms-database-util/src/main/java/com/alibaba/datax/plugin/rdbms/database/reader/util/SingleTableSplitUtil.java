@@ -5,7 +5,6 @@ import com.alibaba.datax.common.util.Configuration;
 import com.alibaba.datax.plugin.rdbms.database.reader.Constant;
 import com.alibaba.datax.plugin.rdbms.database.reader.Key;
 import com.alibaba.datax.plugin.rdbms.database.util.*;
-import com.alibaba.datax.plugin.rdbms.util.*;
 import com.alibaba.fastjson.JSON;
 
 import org.apache.commons.lang3.StringUtils;

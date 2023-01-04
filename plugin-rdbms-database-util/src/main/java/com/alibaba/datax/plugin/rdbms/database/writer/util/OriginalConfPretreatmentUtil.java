@@ -1,11 +1,8 @@
 package com.alibaba.datax.plugin.rdbms.database.writer.util;
 
-import com.alibaba.datax.common.constant.CommonConstant;
 import com.alibaba.datax.common.exception.DataXException;
 import com.alibaba.datax.common.util.Configuration;
-import com.alibaba.datax.common.util.ListUtil;
 import com.alibaba.datax.plugin.rdbms.database.util.*;
-import com.alibaba.datax.plugin.rdbms.util.*;
 import com.alibaba.datax.plugin.rdbms.database.writer.Constant;
 import com.alibaba.datax.plugin.rdbms.database.writer.Key;
 import org.apache.commons.lang3.StringUtils;
@@ -34,8 +31,7 @@ public final class OriginalConfPretreatmentUtil {
 
         simplifyConf(originalConfig);
 
-        //dealColumnConf(originalConfig);
-        dealWriteMode(originalConfig, dataBaseType);
+        //dealWriteMode(originalConfig, dataBaseType);
     }
 
     public static void doCheckBatchSize(Configuration originalConfig) {
@@ -55,8 +51,8 @@ public final class OriginalConfPretreatmentUtil {
                 Object.class);
 
         int tableNum = 0;
-        String username = originalConfig.getString(com.alibaba.datax.plugin.rdbms.database.reader.Key.USERNAME);
-        String password = originalConfig.getString(com.alibaba.datax.plugin.rdbms.database.reader.Key.PASSWORD);
+        String username = originalConfig.getString(Key.USERNAME);
+        String password = originalConfig.getString(Key.PASSWORD);
         for (int i = 0, len = connections.size(); i < len; i++) {
             Configuration connConf = Configuration.from(connections.get(i).toString());
 
@@ -72,7 +68,7 @@ public final class OriginalConfPretreatmentUtil {
             List<String> tables = connConf.getList(Key.TABLE, String.class);
             if (null == tables || tables.isEmpty()) {
                 // 说明是配置的database模式，则需要通过database获取其下的所有基础表，设置回config中
-                String database = connConf.getString(com.alibaba.datax.plugin.rdbms.database.reader.Key.DATABASE);
+                String database = connConf.getString(Key.DATABASE);
                 if (StringUtils.isBlank(database)){
                     throw DataXException.asDataXException(DBUtilErrorCode.REQUIRED_VALUE,
                             "您未配置写入数据库表的表名称和数据库名称. 根据配置DataX找不到您配置的表. 请检查您的配置并作出修改.");
@@ -136,11 +132,8 @@ public final class OriginalConfPretreatmentUtil {
         }
     }
 
-    public static void dealWriteMode(Configuration originalConfig, DataBaseType dataBaseType) {
-        List<String> columns = originalConfig.getList(Key.COLUMN, String.class);
+    public static void dealWriteMode(Configuration originalConfig,String jdbcUrl, DataBaseType dataBaseType,List<String> columns) {
 
-        String jdbcUrl = originalConfig.getString(String.format("%s[0].%s",
-                Constant.CONN_MARK, Key.JDBC_URL, String.class));
 
         // 默认为：insert 方式
         String writeMode = originalConfig.getString(Key.WRITE_MODE, "INSERT");

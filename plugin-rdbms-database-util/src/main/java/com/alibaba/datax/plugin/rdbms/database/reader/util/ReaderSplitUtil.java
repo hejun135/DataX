@@ -57,7 +57,7 @@ public final class ReaderSplitUtil {
                 Validate.isTrue(null != tables && !tables.isEmpty(), "您读取数据库表配置错误.");
 
                 List<String> column = connConf.getList(Key.COLUMN,String.class);
-                Validate.isTrue(column.size() != tables.size(), "您读取数据库表和列集合个数不一致.");
+                Validate.isTrue(column.size() == tables.size(), "您读取数据库表和列集合个数不一致.");
                 for (int j = 0; j < tables.size(); j++) {
                     String table = tables.get(j);
                     tempSlice = sliceConfig.clone();
